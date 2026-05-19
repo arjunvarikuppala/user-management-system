@@ -66,7 +66,7 @@ function AddUser() {
             <input
               type="text"
               placeholder="Full name"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all text-base text-slate-800 placeholder:text-slate-400"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all text-base text-slate-800 placeholder:text-slate-400"
               {...register('name', { required: "Name is required" })}
             />
             {errors.name && (
@@ -82,7 +82,7 @@ function AddUser() {
             <input
               type="email"
               placeholder="Email address"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all text-base text-slate-800 placeholder:text-slate-400"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all text-base text-slate-800 placeholder:text-slate-400"
               {...register('email', { required: "Email is required" })}
             />
             {errors.email && (
@@ -97,7 +97,7 @@ function AddUser() {
             </label>
             <input
               type="date"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all text-base text-slate-800"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all text-base text-slate-800"
               {...register('dateOfBirth', { required: "Date of birth is required" })}
             />
             {errors.dateOfBirth && (
@@ -114,7 +114,7 @@ function AddUser() {
               type="tel"
               inputMode="numeric"
               placeholder="Mobile digits"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all text-base text-slate-800 placeholder:text-slate-400"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all text-base text-slate-800 placeholder:text-slate-400"
               {...register('mobilenumber', {
                 required: "Mobile number is required",
                 pattern: {
@@ -133,17 +133,18 @@ function AddUser() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] disabled:opacity-50 text-white py-3 rounded-xl font-semibold text-sm transition-all shadow-[0_4px_12px_rgba(79,70,229,0.2)] flex items-center justify-center cursor-pointer"
+              className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50 text-white py-3 rounded-full font-bold text-sm transition-all shadow-[0_4px_12px_rgba(37,99,235,0.2)] flex items-center justify-center cursor-pointer"
             >
               {loading ? "Saving..." : "Save Member"}
             </button>
             <Link
               to="/"
-              className="w-full border border-slate-200 text-slate-600 hover:bg-slate-50 py-3 rounded-xl font-semibold text-sm transition flex items-center justify-center cursor-pointer text-center no-underline"
+              className="w-full border border-slate-200 text-slate-600 hover:bg-slate-50 py-3 rounded-full font-bold text-sm transition flex items-center justify-center cursor-pointer text-center no-underline"
             >
               Cancel
             </Link>
           </div>
+
 
         </form>
       </div>

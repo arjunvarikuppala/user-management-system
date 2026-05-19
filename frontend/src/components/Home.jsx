@@ -2,36 +2,30 @@ import { Link } from 'react-router'
 
 function Home() {
   return (
-    <div className="w-full max-w-2xl mx-auto py-12 select-none animate-fade-in space-y-8">
+    <div className="w-full max-w-3xl mx-auto py-24 select-none animate-fade-in flex flex-col items-center justify-center text-center space-y-8">
       {/* Title */}
-      <div className="text-center">
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-800">
-          User Management System
-        </h1>
-      </div>
+      <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900">
+        User Management
+      </h1>
 
-      {/* Grid of Main Functional Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
-        {/* Action 1: Directory */}
-        <Link
-          to="/userlist"
-          className="flex flex-col items-center justify-center p-8 bg-white border border-slate-100 hover:border-indigo-150 hover:bg-slate-50/50 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.01)] transition-all duration-200 no-underline text-center group"
-        >
-          <span className="text-4xl mb-4 group-hover:scale-105 transition-transform">👥</span>
-          <h2 className="text-base font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
-            View Users List
-          </h2>
-        </Link>
+      {/* Subtitle */}
+      <p className="text-base md:text-lg text-slate-600 max-w-xl mx-auto leading-relaxed">
+        The most efficient way to manage your community. Register new members and keep your database organized in one place.
+      </p>
 
-        {/* Action 2: Add User */}
+      {/* Action Buttons */}
+      <div className="flex flex-row gap-4 justify-center items-center w-full pt-4">
         <Link
           to="/adduser"
-          className="flex flex-col items-center justify-center p-8 bg-white border border-slate-100 hover:border-indigo-150 hover:bg-slate-50/50 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.01)] transition-all duration-200 no-underline text-center group"
+          className="bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-sm font-bold px-8 py-3 rounded-full shadow-[0_4px_12px_rgba(37,99,235,0.2)] transition-all duration-150 text-center no-underline"
         >
-          <span className="text-4xl mb-4 group-hover:scale-105 transition-transform">📝</span>
-          <h2 className="text-base font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
-            Add New User
-          </h2>
+          Add New User
+        </Link>
+        <Link
+          to="/userlist"
+          className="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 active:scale-[0.98] text-sm font-bold px-8 py-3 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.02)] transition-all duration-150 text-center no-underline"
+        >
+          View Directory
         </Link>
       </div>
     </div>
@@ -39,3 +33,4 @@ function Home() {
 }
 
 export default Home
+
