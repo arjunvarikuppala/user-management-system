@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router'
+import { requestJson } from '../lib/api'
 
 function AddUser() {
   const navigate = useNavigate()
@@ -24,18 +25,10 @@ function AddUser() {
         mobilenumber: Number(formValues.mobilenumber)
       }
 
-      const res = await fetch("/user-api/user", {
+      await requestJson("/user-api/user", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
         body: JSON.stringify(userData)
       })
-      const data = await res.json()
-
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to save user")
-      }
 
       navigate("/userlist")
     } catch (err) {

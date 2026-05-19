@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useLoaderData, useNavigate } from 'react-router'
+import { requestJson } from '../lib/api'
 
 function formatDate(dateValue) {
   if (!dateValue) {
@@ -50,14 +51,9 @@ function User() {
     setIsDeleting(true)
 
     try {
-      const res = await fetch(`/user-api/users/${user._id}`, {
+      await requestJson(`/user-api/users/${user._id}`, {
         method: "DELETE"
       })
-      const data = await res.json()
-
-      if (!res.ok) {
-        throw new Error(data.message || "Unable to delete user")
-      }
 
       navigate("/userlist")
     } catch (err) {
