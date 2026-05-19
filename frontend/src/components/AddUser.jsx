@@ -1,67 +1,143 @@
-import React from 'react'
-    import { useState } from 'react'
-    import { useForm } from 'react-hook-form'
-    import { useNavigate } from 'react-router'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
+
+const inputClassName =
+  "form-control"
 
 function AddUser() {
-        let { handleSubmit, register } = useForm()
-        let navigate = useNavigate()
-        let [error, setError] = useState(null)
-        let [loading, setLoading] = useState(false)
-        async function userUpdate(props) {
-            setLoading(true)
-            try {
-                // Map dateOfBirth to DOB to match backend schema
-                let userData = {
-                    name: props.name,
-                    email: props.email,
-                    DOB: props.dateOfBirth,
-                    mobilenumber: props.mobilenumber
-                }
-                
-                let res = await fetch("http://localhost:3000/user-api/user", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(userData)
-                })
-                let data = await res.json()
-                
-                if (res.ok) {
-                    navigate("/userlist")
-                }
-                else{
-                    // Show the error message from backend
-                    throw new Error(data.message || "failed to fetch");
-                }
-            }
-            catch(err){
-                setError(err.message)
-            }
-            finally{
-                setLoading(false)
-            }
-        }
-        if(loading===true){
-            return <p className='text-4xl text-red-500' >loading...</p>
-        }
-        else if(error!==null){
-            return <p className='text-4xl text-red-500' >{error}</p>
-        }
-        return (
-            <div>
-                <form onSubmit={handleSubmit(userUpdate)} >
-                    <div className='flex flex-col gap-4 p-10 items-center shadow-2xl '>
-                        <input type="text" {...register('name')} placeholder='enter user' className=' border w-80 p-2 ' />
-                        <input type="email" {...register('email')} placeholder='enter email' className=' border w-80 p-2 ' />
-                        <input type="date" {...register('dateOfBirth')} className='ml-2.5 border w-80 p-2' />
-                        <input type="number" {...register('mobilenumber')} placeholder='enter mobile number' className='ml-2.5 border w-80 p-2' />
-                        <button className='cursor-pointer bg-amber-600 w-20 ' >save</button>
-                    </div>
-                </form>
-            </div>
-        )
-    }
+  const navigate = useNavigate()
+  const [submitError, setSubmitError] = useState("")
+  const [loading, setLoading] = useState(false)
+  const {
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm()
 
-    export default AddUser
+  async function userUpdate(formValues) {
+    setLoading(true)
+    setSubmitError("")
+
+    try {
+      const userData = {
+        name: formValues.name.trim(),
+        email: formValues.email.trim(),
+        DOB: formValues.dateOfBirth,
+        mobilenumber: Number(formValues.mobilenumber)
+      }
+
+      const res = await fetch("http://localhost:3000/user-api/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+      })
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to save user")
+      }
+
+      navigate("/userlist")
+    } catch (err) {
+      setSubmitError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <section className="content-card content-card-narrow">
+      <div className="mb-4">
+        <h1 className="h3 mb-2">Add User</h1>
+        <p className="text-muted mb-0">
+          Enter the user details below.
+        </p>
+      </div>
+
+      {submitError ? (
+        <div className="alert alert-danger py-2" role="alert">
+          {submitError}
+        </div>
+      ) : null}
+
+      <form onSubmit={handleSubmit(userUpdate)}>
+        <div className="mb-3">
+          <label className="form-label">Full name</label>
+          <input
+            type="text"
+            placeholder="Enter user name"
+            className={inputClassName}
+            {...register('name', {
+              required: "Name is required"
+            })}
+          />
+          {errors.name ? (
+            <p className="form-error">{errors.name.message}</p>
+          ) : null}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Email</label>
+          <input
+            type="email"
+            placeholder="Enter email address"
+            className={inputClassName}
+            {...register('email', {
+              required: "Email is required"
+            })}
+          />
+          {errors.email ? (
+            <p className="form-error">{errors.email.message}</p>
+          ) : null}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Date of birth</label>
+          <input
+            type="date"
+            className={inputClassName}
+            {...register('dateOfBirth', {
+              required: "Date of birth is required"
+            })}
+          />
+          {errors.dateOfBirth ? (
+            <p className="form-error">{errors.dateOfBirth.message}</p>
+          ) : null}
+        </div>
+
+        <div className="mb-4">
+          <label className="form-label">Mobile number</label>
+          <input
+            type="tel"
+            inputMode="numeric"
+            placeholder="Enter mobile number"
+            className={inputClassName}
+            {...register('mobilenumber', {
+              required: "Mobile number is required",
+              pattern: {
+                value: /^[0-9]{10,15}$/,
+                message: "Enter a valid mobile number"
+              }
+            })}
+          />
+          {errors.mobilenumber ? (
+            <p className="form-error">{errors.mobilenumber.message}</p>
+          ) : null}
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="btn btn-primary"
+        >
+          {loading ? "Saving..." : "Save user"}
+        </button>
+      </form>
+    </section>
+  )
+}
+
+export default AddUser

@@ -1,27 +1,40 @@
-import React from 'react'
 import { Link } from 'react-router'
 
 function Home() {
-    return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
-            <h1 className="text-4xl font-bold mb-8">Welcome to User Management App</h1>
-            <div className="flex gap-4">
-                <Link 
-                    to="/adduser" 
-                    className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600"
-                >
-                    Add User
-                </Link>
-                <Link 
-                    to="/userlist" 
-                    className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600"
-                >
-                    View Users
-                </Link>
-            </div>
-        </div>
-    )
+  return (
+    <section className="content-card">
+      <h1 className="h2 mb-3">
+        Welcome to User Management
+      </h1>
+      <p className="text-muted mb-4">
+        Use this app to add users, view the list, and open individual records.
+      </p>
+
+      <div className="d-flex flex-wrap gap-2 mb-4">
+        <Link
+          to="/adduser"
+          className="btn btn-primary"
+        >
+          Add User
+        </Link>
+        <Link
+          to="/userlist"
+          className="btn btn-outline-secondary"
+        >
+          View Users
+        </Link>
+      </div>
+
+      <div className="border-top pt-4">
+        <h2 className="h5 mb-3">What you can do</h2>
+        <ul className="mb-0 simple-list">
+          <li>Add a new user with name, email, date of birth, and mobile number.</li>
+          <li>Browse all active users in a simple list.</li>
+          <li>Open a user to view details or delete the record.</li>
+        </ul>
+      </div>
+    </section>
+  )
 }
 
 export default Home
-

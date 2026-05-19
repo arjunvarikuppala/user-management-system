@@ -1,23 +1,49 @@
-import React from 'react'
-import { NavLink  } from 'react-router' 
+import { NavLink } from 'react-router'
+
+const navItems = [
+  { label: "Home", to: "/" },
+  { label: "Add User", to: "/adduser" },
+  { label: "User List", to: "/userlist" }
+]
+
+function getLinkClassName(isActive) {
+  return [
+    "app-nav-link",
+    isActive ? "active" : ""
+  ].join(" ")
+}
 
 function Header() {
   return (
-    <nav className='flex justify-between bg-green-300 h-20'>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIf4R5qPKHPNMyAqV-FjS_OTBB8pfUV29Phg&s"  className='' alt="" width="50px"/>
-       <ul className='flex gap-5 pt-2.5 ml-3.5'>
-            <li>
-                <NavLink  to='/' className={({isActive})=>isActive?"text-white bg-fuchsia-400":" "}>Home</NavLink>
-            </li>
-            <li>
-                <NavLink to='adduser' className={({isActive})=>isActive?"text-white bg-fuchsia-400":" "}>AddUser</NavLink>
-            </li>
-            <li>
-                <NavLink to='userlist' className={({isActive})=>isActive?"text-white bg-fuchsia-400":" "}>UserList</NavLink>
-            </li>
-          
-        </ul>
-    </nav>
+    <header className="border-bottom bg-white">
+      <div className="container d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 py-3">
+        <div>
+          <NavLink
+            to="/"
+            end
+            className="app-brand text-decoration-none"
+          >
+            User Management
+          </NavLink>
+          <p className="mb-0 mt-1 text-muted">
+            Simple pages for adding and viewing users.
+          </p>
+        </div>
+
+        <nav className="app-nav">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === "/"}
+              className={({ isActive }) => getLinkClassName(isActive)}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
+    </header>
   )
 }
 

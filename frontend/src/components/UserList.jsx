@@ -1,50 +1,47 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { Link, useLoaderData } from 'react-router'
 
 function UserList() {
-    let [users, setUsers] = useState([])
-    let navigate = useNavigate()
-    
-    async function fetchUsers() {
-        try {
-            let res = await fetch("http://localhost:3000/user-api/users")
-            let data = await res.json()
-            if (res.ok) {
-                setUsers(data.payload)
-            }
-        } catch (err) {
-            console.log("Error fetching users:", err)
-        }
-    }
-    
-    useEffect(() => {
-        fetchUsers()
-    }, [])
-    
-    function handleUserClick(userId) {
-        // Navigate to User component with user ID
-        navigate(`/user/${userId}`)
-    }
-    
-    return (
+  const users = useLoaderData()
+
+  return (
+    <section className="content-card">
+      <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-4">
         <div>
-            <h1 className="text-2xl font-bold text-center mb-4">Users List</h1>
-            <div className="flex flex-col gap-2 p-4">
-                {users.map(user => (
-                    <div 
-                        key={user._id} 
-                        onClick={() => handleUserClick(user._id)}
-                        className="border p-4 cursor-pointer hover:bg-gray-100 shadow-md"
-                    >
-                        <p className="font-semibold">Name: {user.name}</p>
-                        <p>Email: {user.email}</p>
-                    </div>
-                ))}
-            </div>
-            {users.length === 0 && <p className="text-center text-gray-500">No users found</p>}
+          <h1 className="h3 mb-1">Users List</h1>
+          <p className="text-muted mb-0">Active users in the system.</p>
         </div>
-    )
+        <p className="text-muted mb-0">
+          {users.length} active {users.length === 1 ? "record" : "records"}
+        </p>
+      </div>
+
+      {users.length === 0 ? (
+        <div className="alert alert-light border mb-0" role="alert">
+          No users found.
+        </div>
+      ) : (
+        <div className="list-group">
+          {users.map((user) => (
+            <Link
+              key={user._id}
+              to={`/user/${user._id}`}
+              className="list-group-item list-group-item-action"
+            >
+              <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                <div>
+                  <h2 className="h6 mb-1 text-dark">{user.name}</h2>
+                  <p className="mb-0 text-muted">{user.email}</p>
+                </div>
+                <span className="btn btn-sm btn-outline-secondary">
+                  View Details
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </section>
+  )
 }
 
 export default UserList
-
