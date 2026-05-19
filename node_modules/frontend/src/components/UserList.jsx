@@ -47,12 +47,12 @@ function UserList() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search users..."
-            className="w-full bg-slate-50/50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 outline-hidden focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all text-sm text-slate-700 placeholder:text-slate-400"
+            className="w-full bg-slate-50/50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 outline-hidden focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all text-sm text-slate-700 placeholder:text-slate-400"
           />
         </div>
         <Link
           to="/adduser"
-          className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white text-xs font-semibold px-5 py-3 rounded-xl shadow-[0_4px_12px_rgba(79,70,229,0.2)] text-center cursor-pointer transition-all"
+          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold px-5 py-3 rounded-full shadow-[0_4px_12px_rgba(37,99,235,0.2)] text-center cursor-pointer transition-all"
         >
           Add User
         </Link>
@@ -65,7 +65,7 @@ function UserList() {
           <h3 className="text-base font-semibold text-slate-800 mb-1">No users found</h3>
           <Link
             to="/adduser"
-            className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-all shadow-[0_4px_12px_rgba(79,70,229,0.2)]"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-all shadow-[0_4px_12px_rgba(37,99,235,0.2)]"
           >
             Add New User
           </Link>
@@ -76,7 +76,7 @@ function UserList() {
           <button
             type="button"
             onClick={() => setQuery("")}
-            className="text-xs font-semibold text-indigo-600 hover:underline mt-2"
+            className="text-xs font-semibold text-blue-600 hover:underline mt-2"
           >
             Clear Search
           </button>
@@ -90,13 +90,13 @@ function UserList() {
               className="group bg-white hover:bg-slate-50/50 border border-slate-100 hover:border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all duration-200 shadow-[0_2px_8px_rgba(0,0,0,0.01)] no-underline"
             >
               {/* Initials badge */}
-              <div className="w-12 h-12 bg-indigo-50 text-indigo-600 font-semibold rounded-xl flex items-center justify-center flex-shrink-0 text-sm shadow-inner">
+              <div className="w-12 h-12 bg-blue-50 text-blue-600 font-semibold rounded-xl flex items-center justify-center flex-shrink-0 text-sm shadow-inner">
                 {getInitials(user.name)}
               </div>
 
               {/* Main meta */}
               <div className="flex-1 min-w-0">
-                <h3 className="text-base font-bold text-slate-800 truncate group-hover:text-indigo-600 transition-colors no-underline">
+                <h3 className="text-base font-bold text-slate-800 truncate group-hover:text-blue-600 transition-colors no-underline">
                   {user.name}
                 </h3>
                 <p className="text-sm text-slate-400 truncate mt-0.5 no-underline">
@@ -105,7 +105,7 @@ function UserList() {
               </div>
 
               {/* Action trigger */}
-              <div className="flex items-center gap-1 text-sm font-semibold text-slate-400 group-hover:text-indigo-600 transition-colors">
+              <div className="flex items-center gap-1 text-sm font-semibold text-slate-400 group-hover:text-blue-600 transition-colors">
                 <span>View Details</span>
                 <span className="text-[11px] group-hover:translate-x-0.5 transition-transform">→</span>
               </div>
@@ -118,3 +118,4 @@ function UserList() {
 }
 
 export default UserList
+

@@ -70,7 +70,7 @@ function User() {
       <div>
         <Link
           to="/userlist"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-indigo-600 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-blue-600 transition-colors"
         >
           ← Back to List
         </Link>
@@ -89,7 +89,7 @@ function User() {
           
           {/* Avatar side */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left shrink-0">
-            <div className="w-24 h-24 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner mb-4">
+            <div className="w-24 h-24 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner mb-4">
               {getInitials(user.name)}
             </div>
             <h2 className="text-xl font-bold text-slate-800 tracking-tight">
@@ -124,7 +124,7 @@ function User() {
             type="button"
             onClick={handleDelete}
             disabled={isDeleting}
-            className="w-full sm:w-auto bg-rose-50 hover:bg-rose-100 active:scale-[0.98] disabled:opacity-50 text-rose-600 text-xs font-semibold px-5 py-3 rounded-xl transition-all cursor-pointer text-center"
+            className="w-full sm:w-auto bg-rose-50 hover:bg-rose-100 active:scale-[0.98] disabled:opacity-50 text-rose-600 text-xs font-bold px-5 py-3 rounded-full transition-all cursor-pointer text-center"
           >
             {isDeleting ? "Deleting..." : "Delete User"}
           </button>
@@ -132,13 +132,13 @@ function User() {
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Link
               to="/adduser"
-              className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-5 py-3 rounded-xl transition-all shadow-[0_4px_12px_rgba(79,70,229,0.2)] text-center cursor-pointer no-underline"
+              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-3 rounded-full transition-all shadow-[0_4px_12px_rgba(37,99,235,0.2)] text-center cursor-pointer no-underline"
             >
               Add User
             </Link>
             <Link
               to="/userlist"
-              className="w-full sm:w-auto border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold px-5 py-3 rounded-xl transition-all text-center cursor-pointer no-underline"
+              className="w-full sm:w-auto border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold px-5 py-3 rounded-full transition-all text-center cursor-pointer no-underline"
             >
               Back to List
             </Link>
