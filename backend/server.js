@@ -8,14 +8,17 @@ config()
 const app = exp()
 const port = Number(process.env.PORT) || 3000
 const databaseUrl = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/stack01'
-const allowedOrigins = new Set([
-  process.env.CLIENT_URL || 'http://localhost:5173',
-  'http://127.0.0.1:5173'
-])
 
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.has(origin)) {
+    // Allow requests with no origin (like curl), localhost, or any vercel.app domain
+    if (
+      !origin || 
+      origin.includes('localhost') || 
+      origin.includes('127.0.0.1') || 
+      origin.includes('vercel.app') ||
+      (process.env.CLIENT_URL && origin === process.env.CLIENT_URL)
+    ) {
       callback(null, true)
       return
     }
