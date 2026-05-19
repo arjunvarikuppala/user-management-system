@@ -1,47 +1,67 @@
 import { NavLink } from 'react-router'
 
-const navItems = [
-  { label: "Home", to: "/" },
-  { label: "Add User", to: "/adduser" },
-  { label: "User List", to: "/userlist" }
-]
-
-function getLinkClassName(isActive) {
-  return [
-    "app-nav-link",
-    isActive ? "active" : ""
-  ].join(" ")
-}
-
 function Header() {
   return (
-    <header className="border-bottom bg-white">
-      <div className="container d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 py-3">
-        <div>
+    <header className="w-full sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 select-none">
+      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        
+        {/* Brand Logo */}
+        <NavLink
+          to="/"
+          className="flex items-center gap-2.5 hover:opacity-90 transition-opacity"
+        >
+          <div className="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold shadow-[0_4px_12px_rgba(79,70,229,0.25)]">
+            UM
+          </div>
+          <span className="font-bold text-slate-800 tracking-tight text-lg">
+            User Management System
+          </span>
+        </NavLink>
+
+        {/* Navigation Links */}
+        <nav className="flex items-center gap-1.5 md:gap-3">
           <NavLink
             to="/"
             end
-            className="app-brand text-decoration-none"
+            className={({ isActive }) =>
+              `px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                isActive
+                  ? 'bg-indigo-50 text-indigo-700 font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`
+            }
           >
-            User Management
+            Dashboard
           </NavLink>
-          <p className="mb-0 mt-1 text-muted">
-            Simple pages for adding and viewing users.
-          </p>
-        </div>
-
-        <nav className="app-nav">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === "/"}
-              className={({ isActive }) => getLinkClassName(isActive)}
-            >
-              {item.label}
-            </NavLink>
-          ))}
+          <NavLink
+            to="/userlist"
+            className={({ isActive }) =>
+              `px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                isActive
+                  ? 'bg-indigo-50 text-indigo-700 font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`
+            }
+          >
+            Users List
+          </NavLink>
+          <NavLink
+            to="/adduser"
+            className={({ isActive }) =>
+              `px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                isActive
+                  ? 'bg-indigo-50 text-indigo-700 font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`
+            }
+          >
+            Add User
+          </NavLink>
         </nav>
+
+        {/* Balance layout */}
+        <div className="hidden md:block w-8"></div>
+
       </div>
     </header>
   )

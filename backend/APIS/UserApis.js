@@ -1,69 +1,97 @@
 import exp from 'express'
+import { isValidObjectId } from 'mongoose'
 import { UserModel } from '../model/userModel.js'
 export const userApp = exp.Router()
 
+function createHttpError(statusCode, message) {
+  const error = new Error(message)
+  error.statusCode = statusCode
+  return error
+}
 
-// Create new User
-userApp.post('/user', async (req, res) => {
-    // get userObj from req body
-    let userObj = req.body
-    // create Doc for userObj
-    let UserDoc = await UserModel(userObj)
-    // save the user Document
-    await UserDoc.save()
-    res.status(200).json({ message: "user added successfully" })
+function ensureValidId(userId) {
+  if (!isValidObjectId(userId)) {
+    throw createHttpError(400, 'Invalid ID format')
+  }
+}
 
+async function findUserById(userId) {
+  ensureValidId(userId)
+
+  const user = await UserModel.findById(userId)
+
+  if (!user) {
+    throw createHttpError(404, 'User not found with the given id')
+  }
+
+  return user
+}
+
+userApp.post(['/user', '/users'], async (req, res) => {
+  const createdUser = await UserModel.create(req.body)
+
+  res.status(201).json({
+    message: 'User added successfully',
+    payload: createdUser
+  })
 })
-// Read all users
+
 userApp.get('/users', async (req, res) => {
-    // get all users from usermodel
-    let users = await UserModel.find({status:true})
-    // send all users
-    res.status(200).json({ message: 'usesrslist', payload: users })
-})
-// Read a User by ID
-userApp.get('/users/:id', async (req, res) => {
-    // get the required user id
-    let userId = req.params.id
-    // check valid user or not
-    let userObjDb = await UserModel.findById(userId);
-    // check valid user or not
-    if (!userObjDb) {
-        return res.status(404).json({ message: 'user Not found with the userid' })
-    }
-    else if(userObjDb.status===false){
-        return res.status(404).json({ message: 'user is blocked' })
-    }
-    // convert document to json
-    // let userObj=userObjDb.parser()
-    res.status(200).json({message:'here is the user',payload:userObjDb})
+  const users = await UserModel.find({ status: true })
+    .sort({ createdAt: -1 })
+    .lean()
+
+  res.status(200).json({
+    message: 'Users fetched successfully',
+    payload: users
+  })
 })
 
-// Delete a User by ID,
-userApp.delete('/users/:id',async (req, res) => {
-    // get the required user id
-    let userId = req.params.id
-    // check valid user or not
-    let userObjDb = await UserModel.findById(userId);
-    // check valid user or not
-    if (!userObjDb) {
-        return res.status(403).json({ message: 'user Not found with the userid' })
-    }
-    // delete the user from db
-    let deletedObjDb = await UserModel.findByIdAndUpdate(userId,{$set:{status:false}});
-    res.status(200).json({message:'here is the deleted user',payload:deletedObjDb.name})
+userApp.get('/users/:id', async (req, res) => {
+  const user = await findUserById(req.params.id)
+
+  if (!user.status) {
+    throw createHttpError(404, 'User is inactive')
+  }
+
+  res.status(200).json({
+    message: 'User fetched successfully',
+    payload: user
+  })
 })
-//patch (only for partial changes and put is for complte change )
-userApp.patch('/users/:id',async (req, res) => {
-    // get the required user id
-    let userId = req.params.id
-    // check valid user or not
-    let userObjDb = await UserModel.findById(userId);
-    // check valid user or not
-    if (!userObjDb) {
-        return res.status(403).json({ message: 'user Not found with the userid' })
+
+userApp.delete('/users/:id', async (req, res) => {
+  const user = await findUserById(req.params.id)
+
+  if (!user.status) {
+    throw createHttpError(409, 'User is already inactive')
+  }
+
+  user.status = false
+  await user.save()
+
+  res.status(200).json({
+    message: 'User removed successfully',
+    payload: {
+      id: user._id,
+      name: user.name
     }
-    // delete the user from db
-    let deletedObjDb = await UserModel.findByIdAndUpdate(userId,{$set:{status:true}});
-    res.status(200).json({message:'this user is activated ',payload:deletedObjDb.name})
+  })
+})
+
+userApp.patch('/users/:id', async (req, res) => {
+  const user = await findUserById(req.params.id)
+  const nextStatus = typeof req.body.status === 'boolean' ? req.body.status : true
+
+  user.status = nextStatus
+  await user.save()
+
+  res.status(200).json({
+    message: nextStatus ? 'User activated successfully' : 'User deactivated successfully',
+    payload: {
+      id: user._id,
+      name: user.name,
+      status: user.status
+    }
+  })
 })

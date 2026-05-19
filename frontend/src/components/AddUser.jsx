@@ -1,9 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router'
-
-const inputClassName =
-  "form-control"
+import { useNavigate, Link } from 'react-router'
 
 function AddUser() {
   const navigate = useNavigate()
@@ -27,7 +24,7 @@ function AddUser() {
         mobilenumber: Number(formValues.mobilenumber)
       }
 
-      const res = await fetch("http://localhost:3000/user-api/user", {
+      const res = await fetch("/user-api/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -49,94 +46,115 @@ function AddUser() {
   }
 
   return (
-    <section className="content-card content-card-narrow">
-      <div className="mb-4">
-        <h1 className="h3 mb-2">Add User</h1>
-        <p className="text-muted mb-0">
-          Enter the user details below.
-        </p>
+    <div className="w-full max-w-xl mx-auto select-none animate-fade-in py-4">
+      {/* Title */}
+      <div className="mb-6 text-center">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-800">
+          Add New User
+        </h1>
       </div>
 
-      {submitError ? (
-        <div className="alert alert-danger py-2" role="alert">
-          {submitError}
-        </div>
-      ) : null}
+      {/* Main card */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-[0_10px_30px_rgba(0,0,0,0.015)]">
+        
+        {submitError ? (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl p-4 mb-6">
+            Error: {submitError}
+          </div>
+        ) : null}
 
-      <form onSubmit={handleSubmit(userUpdate)}>
-        <div className="mb-3">
-          <label className="form-label">Full name</label>
-          <input
-            type="text"
-            placeholder="Enter user name"
-            className={inputClassName}
-            {...register('name', {
-              required: "Name is required"
-            })}
-          />
-          {errors.name ? (
-            <p className="form-error">{errors.name.message}</p>
-          ) : null}
-        </div>
+        <form onSubmit={handleSubmit(userUpdate)} className="space-y-6">
+          
+          {/* Full Name */}
+          <div className="space-y-1.5">
+            <label className="block text-sm font-bold text-slate-500 uppercase tracking-wider">
+              Name
+            </label>
+            <input
+              type="text"
+              placeholder="Full name"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all text-base text-slate-800 placeholder:text-slate-400"
+              {...register('name', { required: "Name is required" })}
+            />
+            {errors.name && (
+              <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+            )}
+          </div>
 
-        <div className="mb-3">
-          <label className="form-label">Email</label>
-          <input
-            type="email"
-            placeholder="Enter email address"
-            className={inputClassName}
-            {...register('email', {
-              required: "Email is required"
-            })}
-          />
-          {errors.email ? (
-            <p className="form-error">{errors.email.message}</p>
-          ) : null}
-        </div>
+          {/* Email */}
+          <div className="space-y-1.5">
+            <label className="block text-sm font-bold text-slate-500 uppercase tracking-wider">
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="Email address"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all text-base text-slate-800 placeholder:text-slate-400"
+              {...register('email', { required: "Email is required" })}
+            />
+            {errors.email && (
+              <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+            )}
+          </div>
 
-        <div className="mb-3">
-          <label className="form-label">Date of birth</label>
-          <input
-            type="date"
-            className={inputClassName}
-            {...register('dateOfBirth', {
-              required: "Date of birth is required"
-            })}
-          />
-          {errors.dateOfBirth ? (
-            <p className="form-error">{errors.dateOfBirth.message}</p>
-          ) : null}
-        </div>
+          {/* Date of Birth */}
+          <div className="space-y-1.5">
+            <label className="block text-sm font-bold text-slate-500 uppercase tracking-wider">
+              Date of Birth
+            </label>
+            <input
+              type="date"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all text-base text-slate-800"
+              {...register('dateOfBirth', { required: "Date of birth is required" })}
+            />
+            {errors.dateOfBirth && (
+              <p className="text-sm text-red-500 mt-1">{errors.dateOfBirth.message}</p>
+            )}
+          </div>
 
-        <div className="mb-4">
-          <label className="form-label">Mobile number</label>
-          <input
-            type="tel"
-            inputMode="numeric"
-            placeholder="Enter mobile number"
-            className={inputClassName}
-            {...register('mobilenumber', {
-              required: "Mobile number is required",
-              pattern: {
-                value: /^[0-9]{10,15}$/,
-                message: "Enter a valid mobile number"
-              }
-            })}
-          />
-          {errors.mobilenumber ? (
-            <p className="form-error">{errors.mobilenumber.message}</p>
-          ) : null}
-        </div>
+          {/* Mobile Number */}
+          <div className="space-y-1.5">
+            <label className="block text-sm font-bold text-slate-500 uppercase tracking-wider">
+              Mobile Number
+            </label>
+            <input
+              type="tel"
+              inputMode="numeric"
+              placeholder="Mobile digits"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-hidden focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all text-base text-slate-800 placeholder:text-slate-400"
+              {...register('mobilenumber', {
+                required: "Mobile number is required",
+                pattern: {
+                  value: /^[0-9]{10,15}$/,
+                  message: "Enter a valid mobile number"
+                }
+              })}
+            />
+            {errors.mobilenumber && (
+              <p className="text-sm text-red-500 mt-1">{errors.mobilenumber.message}</p>
+            )}
+          </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="btn btn-primary"
-        >
-          {loading ? "Saving..." : "Save user"}
-        </button>
-      </form>
-    </section>
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-slate-100">
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] disabled:opacity-50 text-white py-3 rounded-xl font-semibold text-sm transition-all shadow-[0_4px_12px_rgba(79,70,229,0.2)] flex items-center justify-center cursor-pointer"
+            >
+              {loading ? "Saving..." : "Save Member"}
+            </button>
+            <Link
+              to="/"
+              className="w-full border border-slate-200 text-slate-600 hover:bg-slate-50 py-3 rounded-xl font-semibold text-sm transition flex items-center justify-center cursor-pointer text-center no-underline"
+            >
+              Cancel
+            </Link>
+          </div>
+
+        </form>
+      </div>
+    </div>
   )
 }
 

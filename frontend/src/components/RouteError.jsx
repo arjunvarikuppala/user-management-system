@@ -10,15 +10,18 @@ function RouteError() {
       : "Something went wrong while rendering this page."
 
   return (
-    <section className="content-card content-card-narrow">
-      <h1 className="h3 mb-3">Page error</h1>
-      <p className="text-muted">{message}</p>
-      <Link
-        to="/"
-        className="btn btn-primary mt-2"
-      >
-        Go Home
-      </Link>
+    <section className="surface-card surface-card--narrow">
+      <p className="eyebrow">Unexpected Issue</p>
+      <h1 className="section-title">Page error</h1>
+      <p className="section-copy">{message}</p>
+      <div className="form-actions">
+        <Link
+          to="/"
+          className="button button--primary"
+        >
+          Go Home
+        </Link>
+      </div>
     </section>
   )
 }

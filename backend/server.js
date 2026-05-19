@@ -5,62 +5,87 @@ import { userApp } from './APIS/UserApis.js'
 import cors from 'cors'
 
 config()
-const app=exp()
-// add cors 
-
-//same server !!
+const app = exp()
+const port = Number(process.env.PORT) || 3000
+const databaseUrl = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/stack01'
+const allowedOrigins = new Set([
+  process.env.CLIENT_URL || 'http://localhost:5173',
+  'http://127.0.0.1:5173'
+])
 
 app.use(cors({
-  origin:"http://localhost:5173"
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin)) {
+      callback(null, true)
+      return
+    }
+
+    callback(new Error('Origin not allowed by CORS'))
+  }
 }))
-// add bodyparser middleware
 app.use(exp.json())
 
-// API'S
-app.use('/user-api',userApp)
-// connect to db
-async function connectDb(){
-    try{
-        // connect to databse 
-        await connect('mongodb://localhost:27017/stack01')
-        console.log('connected to database ')
-        // start server
-        app.listen(process.env.PORT,()=>{
-            console.log("server started listening at port 3000")
-        })
-    }
-    catch(err){
-        console.log('error in connecting to DB',err)
-    }
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    message: 'Server is healthy'
+  })
+})
+
+app.use('/user-api', userApp)
+
+async function connectDb() {
+  try {
+    await connect(databaseUrl)
+    console.log('Connected to database')
+
+    app.listen(port, () => {
+      console.log(`Server started listening at port ${port}`)
+    })
+  } catch (err) {
+    console.log('Error in connecting to DB', err)
+  }
 }
+
 connectDb()
 
-// path Misshandle Middleware
-app.use((req,res,next)=>{
-    res.status(401).json({message: `Invalid path ${req.url} `})
+app.use((req, res) => {
+  res.status(404).json({
+    message: `Invalid path ${req.url}`
+  })
 })
-// error handling middleware
+
 app.use((err, req, res, next) => {
-  // Mongoose validation error
   if (err.name === "ValidationError") {
     return res.status(400).json({
       message: "Validation failed",
       errors: err.errors,
-    });
+    })
   }
-  // Invalid ObjectId
+
   if (err.name === "CastError") {
     return res.status(400).json({
       message: "Invalid ID format",
-    });
+    })
   }
-  // Duplicate key
+
   if (err.code === 11000) {
+    const duplicateField = Object.keys(err.keyPattern || {})[0] || "field"
+
     return res.status(409).json({
-      message: "Duplicate field value",
-    });
+      message: `${duplicateField} already exists`,
+    })
   }
-  res.status(500).json({
-    message: "Internal Server Error",
-  });
-});
+
+  const statusCode = err.statusCode || 500
+  const message = statusCode >= 500
+    ? "Internal Server Error"
+    : err.message
+
+  if (statusCode >= 500) {
+    console.error(err)
+  }
+
+  res.status(statusCode).json({
+    message,
+  })
+})
